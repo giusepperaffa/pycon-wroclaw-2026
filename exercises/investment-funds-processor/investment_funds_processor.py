@@ -4,11 +4,11 @@
 import csv
 import requests
 
-def get_fund_forecast(fund_name) -> dict:
+def get_fund_forecast(fund_name) -> float:
     try:
         r = requests.get(f"http://investments.com/forecast/{fund_name}")
         if r.status_code == '200':
-            return r.json()
+            return r.json()["forecast"]
         return None
     except:
         return None
@@ -27,10 +27,10 @@ class FundProcessor:
             return
 
     def _get_investment_decision(self, profitability, forecast):
-        if isinstance(profitability, str) or isinstance(forecast, str):
-            return self.no_information         
-        else:  
-            return "Yes" if forecast > profitability else "No"
+        try:
+            return "Yes" if float(forecast) > float(profitability) else "No"
+        except:
+            return self.no_information
 
     def _get_forecast(self, fund):
         forecast = get_fund_forecast(fund)
