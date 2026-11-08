@@ -9,7 +9,7 @@ import notification_services
 import vet_surgery_notifier 
 
 
-class VetSurgeryNotifier(unittest.TestCase):
+class TestVetSurgeryNotifier(unittest.TestCase):
     @patch("notification_services.send_email")
     @patch("db_interface.get_active_subscriptions")
     def test_db_exception(self, mock_get_active_subscriptions, mock_send_email):
