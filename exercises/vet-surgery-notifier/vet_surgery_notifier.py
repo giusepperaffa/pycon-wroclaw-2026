@@ -11,7 +11,8 @@ class VetSurgeryNotifier:
     def _query_db(self):
         today_date = datetime.today().isoformat()
         try:
-            self._db_query_results = db_interface.get_active_subscriptions(today_date)
+            db_query_results = db_interface.get_active_subscriptions(today_date)
+            return db_query_results
         except:
             return None
 
@@ -23,7 +24,7 @@ class VetSurgeryNotifier:
         return f"Hi {record['owner']}, your {record['pet_type']} vaccination is now due"
 
     def send_notifications(self):
-        self._query_db()
+        self._db_query_results = self._query_db()
         if self._db_query_results:
             for record in self._get_records_with_expired_vaccine():
                 notification_services.send_email(record["email_address"],
